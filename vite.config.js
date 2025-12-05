@@ -12,8 +12,9 @@ export default defineConfig({
     server: {
         host: '0.0.0.0',
         port: 5173,
+    //    hmr:false
         hmr: {
-            host: '192.168.104.94', // ganti dengan IP laptop kamu
+            host: '192.168.105.120', // ganti dengan IP laptop kamu
         },
     },
 });

@@ -13,31 +13,19 @@
         </div>
     @else
         <div class="bg-white p-5 rounded-xl shadow-lg">
-            <form action="{{ route('pendaftar.payment.upload') }}" method="POST" enctype="multipart/form-data">
-                @csrf
 
-                <label class="block mb-2 font-semibold">Upload Bukti Pembayaran</label>
+            {{-- Tombol Bayar Sekarang --}}
+            <a href="{{ route('pendaftar.payment.midtrans') }}"
+                class="block w-full bg-purple-700 hover:bg-purple-800 text-white p-4 rounded-xl font-semibold text-center">
+                Bayar Sekarang
+            </a>
 
-                <input type="file" name="proof"
-                    class="block w-full bg-gray-100 p-3 rounded-lg mb-3">
+            @if ($payment)
+                <p class="mt-3 text-center text-sm text-gray-600">
+                    Status: <span class="font-bold">{{ ucfirst($payment->status) }}</span>
+                </p>
+            @endif
 
-                @if ($payment && $payment->proof)
-                    <p class="text-sm text-gray-600 mb-2">Bukti sebelumnya:</p>
-                    <img src="{{ asset('storage/' . $payment->proof) }}" class="w-32 rounded-lg mb-3">
-                @endif
-
-                <button type="submit"
-                    class="w-full bg-purple-700 text-white p-4 rounded-xl font-semibold">
-                    Upload Bukti
-                </button>
-
-
-                @if ($payment)
-                    <p class="mt-3 text-center text-sm text-gray-600">
-                        Status: <span class="font-bold">{{ ucfirst($payment->status) }}</span>
-                    </p>
-                @endif
-            </form>
         </div>
     @endif
 

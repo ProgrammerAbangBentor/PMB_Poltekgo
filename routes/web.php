@@ -31,6 +31,9 @@ Route::middleware('auth:pendaftar')
         Route::get('/dashboard', [DashboardController::class, 'index'])
             ->name('dashboard');
 
+        Route::get('/payment/midtrans', [PaymentController::class, 'pay'])
+             ->name('payment.midtrans');
+
         Route::get('/payment', [PaymentController::class, 'index'])
             ->name('payment');
 
@@ -55,7 +58,8 @@ Route::middleware('auth:pendaftar')
         Route::get('/hasil-akhir', [SelectionStatusController::class, 'hasilAkhir'])
         ->name('status.final-result');
 });
-
+Route::post('/midtrans/callback', [PaymentController::class, 'callback'])
+    ->name('midtrans.callback');
 
 
 

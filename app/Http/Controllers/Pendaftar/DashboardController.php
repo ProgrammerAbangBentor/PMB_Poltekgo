@@ -5,14 +5,14 @@ namespace App\Http\Controllers\Pendaftar;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 // use App\Models\Payment;
-use App\Models\PaymentManual;
+use App\Models\Payment;
 
 class DashboardController extends Controller
 {
     public function index()
     {
         $applicant = Auth::guard('pendaftar')->user();
-        $payment = PaymentManual::where('applicant_id', $applicant->id)->first();
+        $payment = Payment::where('applicant_id', $applicant->id)->first();
 
         $stepsCompleted = 0;
 
