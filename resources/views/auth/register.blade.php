@@ -1,58 +1,87 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
+<x-guest-layout title="Daftar Akun Pendaftar">
+
+    {{-- <!-- LOGO -->
+    <div class="flex justify-center -mt-8 mb-4">
+        <img src="{{ asset('logo/logo-politeknik-gorontalo.png') }}"
+             class="w-20 h-20 object-contain">
+    </div> --}}
+
+    <!-- TITLE -->
+    <div class="text-center mb-6">
+        <h1 class="text-2xl font-bold text-white">Daftar Akun</h1>
+        <p class="text-purple-200 text-sm">Buat akun pendaftar baru</p>
+    </div>
+
+    <!-- FORM -->
+    <form method="POST" action="{{ route('register') }}" class="space-y-4">
         @csrf
 
-        <!-- Name -->
+        {{-- Nama Lengkap --}}
         <div>
-            <x-input-label for="name" :value="__('Nama Lengkap')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="nama lengkap" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+            <label class="text-sm text-purple-200">Nama Lengkap</label>
+            <input id="name" name="name" type="text"
+                   value="{{ old('name') }}"
+                   required
+                   class="w-full px-4 py-3 rounded-lg bg-white/10 text-white placeholder-purple-300
+                   border border-white/20 focus:ring-2 focus:ring-purple-300 outline-none">
+            <x-input-error :messages="$errors->get('name')" class="text-red-300 mt-1" />
         </div>
 
+        {{-- No HP --}}
         <div>
-            <x-input-label for="phone" :value="__('No HP')" />
-            <x-text-input id="phone" class="block mt-1 w-full" type="text" name="phone" :value="old('phone')" autofocus />
-            <x-input-error :messages="$errors->get('phone')" class="mt-2" />
+            <label class="text-sm text-purple-200">No HP</label>
+            <input id="phone" name="phone" type="text"
+                   value="{{ old('phone') }}"
+                   class="w-full px-4 py-3 rounded-lg bg-white/10 text-white placeholder-purple-300
+                   border border-white/20 focus:ring-2 focus:ring-purple-300 outline-none">
+            <x-input-error :messages="$errors->get('phone')" class="text-red-300 mt-1" />
         </div>
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        {{-- Email --}}
+        <div>
+            <label class="text-sm text-purple-200">Email</label>
+            <input id="email" name="email" type="email"
+                   value="{{ old('email') }}" required
+                   class="w-full px-4 py-3 rounded-lg bg-white/10 text-white placeholder-purple-300
+                   border border-white/20 focus:ring-2 focus:ring-purple-300 outline-none">
+            <x-input-error :messages="$errors->get('email')" class="text-red-300 mt-1" />
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        {{-- Password --}}
+        <div>
+            <label class="text-sm text-purple-200">Password</label>
+            <input id="password" name="password" type="password" required
+                   class="w-full px-4 py-3 rounded-lg bg-white/10 text-white placeholder-purple-300
+                   border border-white/20 focus:ring-2 focus:ring-purple-300 outline-none">
+            <x-input-error :messages="$errors->get('password')" class="text-red-300 mt-1" />
         </div>
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+        {{-- Password Confirmation --}}
+        <div>
+            <label class="text-sm text-purple-200">Konfirmasi Password</label>
+            <input id="password_confirmation" name="password_confirmation" type="password" required
+                   class="w-full px-4 py-3 rounded-lg bg-white/10 text-white placeholder-purple-300
+                   border border-white/20 focus:ring-2 focus:ring-purple-300 outline-none">
+            <x-input-error :messages="$errors->get('password_confirmation')" class="text-red-300 mt-1" />
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
+        <!-- Submit -->
+        <button type="submit"
+            class="w-full py-3 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-semibold shadow-lg transition">
+            Daftar
+        </button>
+
+        <!-- Link ke Login -->
+        <p class="text-center text-purple-200 text-sm">
+            Sudah punya akun?
+            <a href="{{ route('login') }}" class="text-purple-300 hover:text-purple-100 font-semibold">
+                Login sekarang
             </a>
+        </p>
 
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
+        <p class="text-center text-purple-300 text-xs mt-6">
+            PMB Politeknik Gorontalo © {{ date('Y') }}
+        </p>
     </form>
+
 </x-guest-layout>
