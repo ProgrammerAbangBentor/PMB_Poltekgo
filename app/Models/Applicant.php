@@ -16,9 +16,11 @@ class Applicant extends Authenticatable
         'pmb_period_id',
         'pmb_wave_id',
         'study_program_id',
+        'study_program_id_2',
         'entry_path_id',
         'nama',
         'email',
+        'nik',
         'no_hp',
         'password',
         'no_pendaftaran',
@@ -65,6 +67,12 @@ class Applicant extends Authenticatable
     {
         return $this->belongsTo(StudyProgram::class, 'study_program_id');
     }
+
+    public function program2()
+    {
+        return $this->belongsTo(StudyProgram::class, 'study_program_id_2');
+    }
+
 
     public function path()
     {
@@ -136,4 +144,72 @@ class Applicant extends Authenticatable
     {
         return $this->is_berkas_lulus && $this->is_nilai_lulus;
     }
+
+    public function toFinalCandidateData()
+    {
+        // Ambil semua nilai biodata
+        $biodata = $this->fieldValues()
+            ->with('field')
+            ->get()
+            ->pluck('field_value', 'field.field_key'); // ['nik' => '123', ...]
+
+        return [
+            // Data wajib SAKTI
+            'nama' => $this->nama,
+            'tempat_lahir' => $biodata['tempat_lahir'] ?? null,
+            'tanggal_lahir' => $biodata['tanggal_lahir'] ?? null,
+            'jenis_kelamin' => $biodata['jenis_kelamin'] ?? null,
+            'agama' => $biodata['agama'] ?? null,
+            'kewarganegaraan' => $biodata['kewarganegaraan'] ?? null,
+            'nik' => $biodata['nik'] ?? null,
+            'nisn' => $biodata['nisn'] ?? null,
+            'npwp' => $biodata['npwp'] ?? null,
+
+            // Alamat
+            'jalan' => $biodata['jalan'] ?? null,
+            'dusun' => $biodata['dusun'] ?? null,
+            'rt' => $biodata['rt'] ?? null,
+            'rw' => $biodata['rw'] ?? null,
+            'kelurahan' => $biodata['kelurahan'] ?? null,
+            'kecamatan' => $biodata['kecamatan'] ?? null,
+            'kode_pos' => $biodata['kode_pos'] ?? null,
+
+            // Kontak
+            'hp' => $biodata['hp'] ?? $this->no_hp,
+            'email' => $biodata['email'] ?? $this->email,
+
+            // Info tambahan
+            'penerima_kps' => $biodata['penerima_kps'] ?? null,
+            'alat_transportasi' => $biodata['alat_transportasi'] ?? null,
+            'jenis_tinggal' => $biodata['jenis_tinggal'] ?? null,
+
+            // Ibu
+            'nama_ibu' => $biodata['nama_ibu'] ?? null,
+            'tanggal_lahir_ibu' => $biodata['tanggal_lahir_ibu'] ?? null,
+            'pendidikan_ibu' => $biodata['pendidikan_ibu'] ?? null,
+            'pekerjaan_ibu' => $biodata['pekerjaan_ibu'] ?? null,
+            'penghasilan_ibu' => $biodata['penghasilan_ibu'] ?? null,
+
+            // Ayah
+            'nama_ayah' => $biodata['nama_ayah'] ?? null,
+            'tanggal_lahir_ayah' => $biodata['tanggal_lahir_ayah'] ?? null,
+            'pendidikan_ayah' => $biodata['pendidikan_ayah'] ?? null,
+            'pekerjaan_ayah' => $biodata['pekerjaan_ayah'] ?? null,
+            'penghasilan_ayah' => $biodata['penghasilan_ayah'] ?? null,
+
+            // Wali
+            'nama_wali' => $biodata['nama_wali'] ?? null,
+            'tanggal_lahir_wali' => $biodata['tanggal_lahir_wali'] ?? null,
+            'pendidikan_wali' => $biodata['pendidikan_wali'] ?? null,
+            'pekerjaan_wali' => $biodata['pekerjaan_wali'] ?? null,
+            'penghasilan_wali' => $biodata['penghasilan_wali'] ?? null,
+
+            // Mapping PMB
+            'study_program_id' => $this->study_program_id,
+            'entry_path_id' => $this->entry_path_id,
+            'pmb_period_id' => $this->pmb_period_id,
+            'pmb_wave_id' => $this->pmb_wave_id,
+        ];
+    }
+
 }

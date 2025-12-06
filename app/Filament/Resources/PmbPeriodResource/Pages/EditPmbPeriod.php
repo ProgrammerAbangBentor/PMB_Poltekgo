@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\ApplicantScoreResource\Pages;
+namespace App\Filament\Resources\PmbPeriodResource\Pages;
 
-use App\Filament\Resources\ApplicantScoreResource;
+use App\Filament\Resources\PmbPeriodResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditApplicantScore extends EditRecord
+class EditPmbPeriod extends EditRecord
 {
-    protected static string $resource = ApplicantScoreResource::class;
+    protected static string $resource = PmbPeriodResource::class;
 
     protected function getHeaderActions(): array
     {

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\ApplicantScoreResource\Pages;
+namespace App\Filament\Resources\PmbFinalCandidateResource\Pages;
 
-use App\Filament\Resources\ApplicantScoreResource;
+use App\Filament\Resources\PmbFinalCandidateResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditApplicantScore extends EditRecord
+class EditPmbFinalCandidate extends EditRecord
 {
-    protected static string $resource = ApplicantScoreResource::class;
+    protected static string $resource = PmbFinalCandidateResource::class;
 
     protected function getHeaderActions(): array
     {

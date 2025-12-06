@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\ApplicantScoreResource\Pages;
+namespace App\Filament\Resources\PmbWaveResource\Pages;
 
-use App\Filament\Resources\ApplicantScoreResource;
+use App\Filament\Resources\PmbWaveResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditApplicantScore extends EditRecord
+class EditPmbWave extends EditRecord
 {
-    protected static string $resource = ApplicantScoreResource::class;
+    protected static string $resource = PmbWaveResource::class;
 
     protected function getHeaderActions(): array
     {

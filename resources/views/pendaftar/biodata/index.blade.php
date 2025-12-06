@@ -52,12 +52,25 @@
 
                             {{-- INPUT TYPES --}}
                             @if ($field->type === 'text')
-                                <input type="text"
-                                       name="field_{{ $field->id }}"
-                                       placeholder="Masukkan {{ strtolower($field->label) }}"
-                                       value="{{ $values[$field->id]->field_value ?? '' }}"
-                                       class="bg-transparent w-full outline-none text-gray-900 placeholder-gray-400">
+
+                                @if ($field->field_key === 'nik')
+                                    {{-- NIK otomatis dari applicant dan tidak bisa diubah --}}
+                                    <input type="text"
+                                        name="field_{{ $field->id }}"
+                                        value="{{ auth('pendaftar')->user()->nik }}"
+                                        readonly
+                                        class="bg-transparent w-full outline-none text-gray-400 cursor-not-allowed">
+                                @else
+                                    {{-- Normal text input --}}
+                                    <input type="text"
+                                        name="field_{{ $field->id }}"
+                                        placeholder="Masukkan {{ strtolower($field->label) }}"
+                                        value="{{ $values[$field->id]->field_value ?? '' }}"
+                                        class="bg-transparent w-full outline-none text-gray-900 placeholder-gray-400">
+                                @endif
+
                             @endif
+
 
                             @if ($field->type === 'number')
                                 <input type="number"

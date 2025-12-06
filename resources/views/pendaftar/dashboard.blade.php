@@ -1,31 +1,36 @@
-<x-pendaftar.layout>
+<x-pendaftar.layout title="Dashboard">
 
-    <!-- Curved Header -->
+    @php
+        $isPaid = $payment && $payment->status === 'approved';
+    @endphp
+
+    <!-- HEADER -->
     <div class="relative w-full h-[180px]">
-        <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-purple-700 to-indigo-700 rounded-b-[40px] shadow-lg p-7 text-white">
+        <div class="absolute inset-0 bg-gradient-to-br from-purple-700 to-indigo-700 rounded-b-[40px] shadow-lg p-7 text-white">
             <p class="text-sm opacity-80">Selamat datang,</p>
             <h1 class="text-2xl font-bold mt-1">{{ $applicant->nama }}</h1>
             <p class="text-sm opacity-90">No. Pendaftaran: {{ $applicant->no_pendaftaran }}</p>
         </div>
     </div>
 
-    <!-- Floating Section -->
+
+    <!-- CONTENT -->
     <div class="px-4 -mt-16 space-y-6 relative z-10">
 
-        <!-- Progress -->
+        <!-- PROGRESS -->
         <div class="bg-white p-5 rounded-2xl shadow-xl">
             <p class="font-semibold mb-2">Progress Pendaftaran</p>
 
-            <div class="w-full bg-gray-300 h-2 rounded-full overflow-hidden">
+            <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
                 <div class="bg-purple-600 h-2 rounded-full transition-all duration-700"
-                    style="width: {{ $progress }}%"></div>
+                    style="width: {{ $progress }}%">
+                </div>
             </div>
 
             <p class="text-xs text-gray-600 mt-2">
                 {{ round($progress) }}% selesai
             </p>
         </div>
-
 
 
         {{-- PAYMENT STATUS --}}
@@ -49,14 +54,15 @@
             <div class="bg-green-100 text-green-700 p-4 rounded-xl shadow">
                 Pembayaran pendaftaran sudah terverifikasi 🎉
             </div>
-
         @endif
 
 
-        <!-- Menu Grid -->
+        <!-- MENU GRID -->
         <div class="grid grid-cols-2 gap-4">
 
-            <a href="{{ route('pendaftar.payment') }}" class="bg-white p-5 rounded-xl shadow-lg flex flex-col items-center">
+            {{-- PEMBAYARAN --}}
+            <a href="{{ route('pendaftar.payment') }}"
+                class="bg-white p-5 rounded-xl shadow-lg flex flex-col items-center">
                 <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
                     <span class="text-2xl">💳</span>
                 </div>
@@ -72,54 +78,55 @@
                 </p>
             </a>
 
-            @if ($payment && $payment->status === 'approved')
-                <a href="{{ route('pendaftar.biodata.index') }}" class="bg-white p-5 rounded-xl shadow-lg flex flex-col items-center">
-                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                        <span class="text-2xl">🧍‍♂️</span>
-                    </div>
-                    <p class="mt-2 font-semibold text-sm">Biodata</p>
-                    <p class="text-xs text-gray-500">Isi data diri</p>
-                </a>
-            @else
-                <a href="{{ route('pendaftar.payment') }}"
-                class="bg-gray-200 p-5 rounded-xl shadow-lg flex flex-col items-center opacity-60">
-            @endif
 
-            @if ($payment && $payment->status === 'approved')
-                <a href="{{ route('pendaftar.documents.index') }}" class="bg-white p-5 rounded-xl shadow-lg flex flex-col items-center">
-                    <div class="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center">
-                        <span class="text-2xl">🗂️</span>
-                    </div>
-                    <p class="mt-2 font-semibold text-sm">Upload Berkas</p>
-                    <p class="text-xs text-gray-500">KTP, KK, Ijazah</p>
-                </a>
-            @else
-                <a href="{{ route('pendaftar.payment') }}"
-                class="bg-gray-200 p-5 rounded-xl shadow-lg flex flex-col items-center opacity-60">
-            @endif
+            {{-- FORMULIR PENDAFTAR --}}
+            <a href="{{ $isPaid ? route('pendaftar.biodata.index') : '#' }}"
+                class="bg-white p-5 rounded-xl shadow-lg flex flex-col items-center
+                {{ !$isPaid ? 'opacity-50 pointer-events-none' : '' }}">
+                <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                    <span class="text-2xl">🧍‍♂️</span>
+                </div>
+                <p class="mt-2 font-semibold text-sm">Formulir Pendaftar</p>
+                <p class="text-xs text-gray-500">Isi data diri</p>
+            </a>
 
-            @if ($payment && $payment->status === 'approved')
-                <a href="{{ route('pendaftar.status.index') }}" class="bg-white p-5 rounded-xl shadow-lg flex flex-col items-center">
-                    <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center">
-                        <span class="text-2xl">📊</span>
-                    </div>
-                    <p class="mt-2 font-semibold text-sm">Status Seleksi</p>
-                    <p class="text-xs text-gray-500">Pantau hasil</p>
-                </a>
-            @else
-                <a href="{{ route('pendaftar.payment') }}"
-                class="bg-gray-200 p-5 rounded-xl shadow-lg flex flex-col items-center opacity-60">
-            @endif
+
+            {{-- UPLOAD BERKAS --}}
+            <a href="{{ $isPaid ? route('pendaftar.documents.index') : '#' }}"
+                class="bg-white p-5 rounded-xl shadow-lg flex flex-col items-center
+                {{ !$isPaid ? 'opacity-50 pointer-events-none' : '' }}">
+                <div class="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center">
+                    <span class="text-2xl">🗂️</span>
+                </div>
+                <p class="mt-2 font-semibold text-sm">Upload Berkas</p>
+                <p class="text-xs text-gray-500">KTP, KK, Ijazah</p>
+            </a>
+
+
+            {{-- STATUS SELEKSI --}}
+            <a href="{{ $isPaid ? route('pendaftar.status.index') : '#' }}"
+                class="bg-white p-5 rounded-xl shadow-lg flex flex-col items-center
+                {{ !$isPaid ? 'opacity-50 pointer-events-none' : '' }}">
+                <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center">
+                    <span class="text-2xl">📊</span>
+                </div>
+                <p class="mt-2 font-semibold text-sm">Status Seleksi</p>
+                <p class="text-xs text-gray-500">Pantau hasil</p>
+            </a>
+
         </div>
 
-        <!-- Important Info -->
-        <div class="bg-white p-5 rounded-2xl shadow-xl">
-            <p class="font-semibold mb-2">Informasi Penting</p>
-            <p class="text-gray-600 text-sm leading-relaxed">
-                Kamu belum melakukan pembayaran biaya pendaftaran.
-                Silakan selesaikan untuk melanjutkan ke biodata.
-            </p>
-        </div>
+
+        {{-- INFORMASI PENTING --}}
+        @if (!$isPaid)
+            <div class="bg-white p-5 rounded-2xl shadow-xl">
+                <p class="font-semibold mb-2">Informasi Penting</p>
+                <p class="text-gray-600 text-sm leading-relaxed">
+                    Kamu belum melakukan pembayaran biaya pendaftaran.
+                    Silakan selesaikan untuk melanjutkan ke formulir pendaftar.
+                </p>
+            </div>
+        @endif
 
     </div>
 
