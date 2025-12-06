@@ -7,6 +7,7 @@ use App\Http\Controllers\Pendaftar\PaymentController;
 use App\Http\Controllers\Pendaftar\BiodataController;
 use App\Http\Controllers\Pendaftar\DocumentController;
 use App\Http\Controllers\Pendaftar\SelectionStatusController;
+use App\Http\Controllers\Pendaftar\AdministrationPaymentController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -67,6 +68,9 @@ Route::middleware('auth:pendaftar')
 
         Route::get('/hasil-akhir', [SelectionStatusController::class, 'hasilAkhir'])
         ->name('status.final-result');
+
+        Route::get('/payment-administration',[AdministrationPaymentController::class, 'index']
+        )->name('payment.admin');
 
 });
 Route::post('/midtrans/callback', [PaymentController::class, 'callback'])

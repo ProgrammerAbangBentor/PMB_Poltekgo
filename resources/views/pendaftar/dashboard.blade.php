@@ -114,6 +114,15 @@
                 <p class="text-xs text-gray-500">Pantau hasil</p>
             </a>
 
+            <a href="{{ route('pendaftar.payment.admin') }}"
+                class="bg-white p-5 rounded-xl shadow-lg flex flex-col items-center">
+                <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                    <span class="text-2xl">💰</span>
+                </div>
+                <p class="mt-2 font-semibold text-sm">Pembayaran Administrasi</p>
+                <p class="text-xs text-gray-500">Lihat status pembayaran</p>
+            </a>
+
         </div>
 
 
