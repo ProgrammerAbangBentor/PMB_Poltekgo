@@ -37,6 +37,9 @@ Route::middleware('auth:pendaftar')
         Route::get('/payment', [PaymentController::class, 'index'])
             ->name('payment');
 
+        Route::get('/kartu/download', [PaymentController::class, 'downloadKartu'])
+            ->name('download.kartu');
+
         Route::post('/payment/upload', [PaymentController::class, 'upload'])
             ->name('payment.upload');
 

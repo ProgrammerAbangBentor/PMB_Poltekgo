@@ -136,4 +136,9 @@ class Applicant extends Authenticatable
     {
         return $this->is_berkas_lulus && $this->is_nilai_lulus;
     }
+
+      public function payment()
+{
+    return $this->hasOne(\App\Models\Payment::class, 'applicant_id');
+}
 }
