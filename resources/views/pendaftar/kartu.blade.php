@@ -90,17 +90,30 @@
     <div class="section-title">Data Pendaftar</div>
 
     <table width="100%">
-        <tr><td width="35%">Nama Lengkap</td><td width="5%">:</td><td>{{ $pendaftar->nama }}</td></tr>
-        <tr><td>NIK</td><td>:</td><td>{{ $pendaftar->nik }}</td></tr>
-        <tr><td>Email</td><td>:</td><td>{{ $pendaftar->email }}</td></tr>
-        <tr><td>No. Telepon</td><td>:</td><td>{{ $pendaftar->no_hp }}</td></tr>
-        <tr><td>Program Studi Pilihan</td><td>:</td><td>{{ $pendaftar->studyProgram->name ?? '-' }}</td></tr>
-        <tr>
-            <td>Status Pembayaran Awal</td>
-            <td>:</td>
-            <td><strong style="color: rgb(0, 0, 0);">{{ ucfirst($payment->status) }}</strong></td>
-        </tr>
-    </table>
+    <tr><td width="35%">Nama Lengkap</td><td width="5%">:</td><td>{{ $pendaftar->nama }}</td></tr>
+    <tr><td>NIK</td><td>:</td><td>{{ $pendaftar->nik }}</td></tr>
+    <tr><td>Email</td><td>:</td><td>{{ $pendaftar->email }}</td></tr>
+    <tr><td>No. Telepon</td><td>:</td><td>{{ $pendaftar->no_hp }}</td></tr>
+
+    <tr>
+        <td>Program Studi Pilihan 1</td>
+        <td>:</td>
+        <td>{{ $pendaftar->program->name ?? '-' }}</td>
+    </tr>
+
+    <tr>
+        <td>Program Studi Pilihan 2</td>
+        <td>:</td>
+        <td>{{ $pendaftar->program2->name ?? '-' }}</td>
+    </tr>
+
+    <tr>
+        <td>Status Pembayaran Awal</td>
+        <td>:</td>
+        <td><strong>{{ ucfirst($payment->status) }}</strong></td>
+    </tr>
+</table>
+
 
     <!-- Pemisah section -->
     <div class="content-divider"></div>
