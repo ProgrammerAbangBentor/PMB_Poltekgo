@@ -28,18 +28,19 @@
                     <span class="text-xs mt-1">Beranda</span>
                 </a>
 
-                <a href="#" class="flex flex-col items-center text-gray-700">
+                <a href="{{ route('pendaftar.status.index') }}" class="flex flex-col items-center text-gray-700">
                     <span class="text-xl">📄</span>
                     <span class="text-xs mt-1">Status</span>
                 </a>
 
-                <a href="#" class="flex flex-col items-center text-gray-700">
+                <a href="{{ route('pendaftar.account') }}" class="flex flex-col items-center text-gray-700">
                     <span class="text-xl">👤</span>
                     <span class="text-xs mt-1">Akun</span>
                 </a>
 
             </div>
         </nav>
+
 
     </div>
 

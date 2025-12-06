@@ -35,7 +35,8 @@ class BiodataController extends Controller
         // VALIDASI DINAMIS
         $rules = [];
         foreach ($fields as $field) {
-            if ($field->is_required) {
+            if ($field->is_required && $field->field_key !== 'nik') {
+                // nik tidak divalidasi dari form
                 $rules["field_{$field->id}"] = 'required';
             }
         }
@@ -44,7 +45,13 @@ class BiodataController extends Controller
 
         // SIMPAN VALUE
         foreach ($fields as $field) {
-            $value = $request->input("field_{$field->id}");
+
+            // Jika field = nik → ambil dari applicant, jangan ambil dari input
+            if ($field->field_key === 'nik') {
+                $value = $applicant->nik; // selalu pakai nik dari tabel applicant
+            } else {
+                $value = $request->input("field_{$field->id}");
+            }
 
             ApplicantFieldValue::updateOrCreate(
                 [
@@ -52,7 +59,7 @@ class BiodataController extends Controller
                     'biodata_field_id'  => $field->id,
                 ],
                 [
-                    'field_value' => $value
+                    'field_value' => $value,
                 ]
             );
         }
@@ -64,4 +71,5 @@ class BiodataController extends Controller
 
         return redirect()->back()->with('success', 'Biodata berhasil disimpan!');
     }
+
 }

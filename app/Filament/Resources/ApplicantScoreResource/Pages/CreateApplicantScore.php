@@ -9,4 +9,8 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateApplicantScore extends CreateRecord
 {
     protected static string $resource = ApplicantScoreResource::class;
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

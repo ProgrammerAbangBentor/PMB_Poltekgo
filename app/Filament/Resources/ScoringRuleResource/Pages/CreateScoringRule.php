@@ -9,4 +9,8 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateScoringRule extends CreateRecord
 {
     protected static string $resource = ScoringRuleResource::class;
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

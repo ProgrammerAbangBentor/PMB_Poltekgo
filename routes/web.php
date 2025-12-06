@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Pendaftar\LogoutController;
 use App\Http\Controllers\Pendaftar\DashboardController;
 use App\Http\Controllers\Pendaftar\PaymentController;
 use App\Http\Controllers\Pendaftar\BiodataController;
 use App\Http\Controllers\Pendaftar\DocumentController;
 use App\Http\Controllers\Pendaftar\SelectionStatusController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 
 Route::get('/', function () {
@@ -30,6 +32,14 @@ Route::middleware('auth:pendaftar')
 
         Route::get('/dashboard', [DashboardController::class, 'index'])
             ->name('dashboard');
+
+        Route::get('/akun', function () {
+            $applicant = Auth::guard('pendaftar')->user();
+            return view('pendaftar.account.index', compact('applicant'));
+        })->name('account');
+
+        Route::post('/logout', [LogoutController::class, 'logout'])
+            ->name('logout');
 
         Route::get('/payment/midtrans', [PaymentController::class, 'pay'])
              ->name('payment.midtrans');
@@ -60,12 +70,10 @@ Route::middleware('auth:pendaftar')
 
         Route::get('/hasil-akhir', [SelectionStatusController::class, 'hasilAkhir'])
         ->name('status.final-result');
+
 });
 Route::post('/midtrans/callback', [PaymentController::class, 'callback'])
     ->name('midtrans.callback');
-
-
-
 
 require __DIR__.'/auth.php';
 

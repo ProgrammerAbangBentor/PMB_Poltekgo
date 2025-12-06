@@ -7,6 +7,7 @@ use App\Models\Applicant;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Resources\Resource;
+use Filament\Notifications\Notification;
 
 class ApplicantResource extends Resource
 {
@@ -33,21 +34,21 @@ class ApplicantResource extends Resource
 
                     Forms\Components\Tabs\Tab::make('Info PMB')
                         ->schema([
-                            // Forms\Components\Select::make('pmb_period_id')
-                            //     ->relationship('period', 'nama_periode')
-                            //     ->label('Periode PMB'),
+                            Forms\Components\Select::make('pmb_period_id')
+                                ->relationship('period', 'nama_periode')
+                                ->label('Periode PMB'),
 
-                            // Forms\Components\Select::make('pmb_wave_id')
-                            //     ->relationship('wave', 'nama_gelombang')
-                            //     ->label('Gelombang'),
+                            Forms\Components\Select::make('pmb_wave_id')
+                                ->relationship('wave', 'nama_gelombang')
+                                ->label('Gelombang'),
 
-                            // Forms\Components\Select::make('study_program_id')
-                            //     ->relationship('program', 'nama_program')
-                            //     ->label('Program Studi'),
+                            Forms\Components\Select::make('study_program_id')
+                                ->relationship('program', 'nama')
+                                ->label('Program Studi'),
 
-                            // Forms\Components\Select::make('entry_path_id')
-                            //     ->relationship('path', 'nama_jalur')
-                            //     ->label('Jalur Masuk'),
+                            Forms\Components\Select::make('entry_path_id')
+                                ->relationship('path', 'nama')
+                                ->label('Jalur Masuk'),
                         ])->columns(2),
 
                     // ===================== TAB 2: BIODATA =====================
@@ -95,10 +96,6 @@ class ApplicantResource extends Resource
                     ->label('Nama')
                     ->searchable()
                     ->sortable(),
-
-                Tables\Columns\TextColumn::make('email')
-                    ->label('Email')
-                    ->searchable(),
 
                 Tables\Columns\BadgeColumn::make('is_biodata_complete')
                     ->label('Biodata')
@@ -152,7 +149,47 @@ class ApplicantResource extends Resource
             ->defaultSort('created_at', 'desc')
             ->actions([
                 Tables\Actions\EditAction::make(),
+
+                Tables\Actions\Action::make('kirimFinal')
+                    ->label('Final')
+                    ->icon('heroicon-o-check-circle')
+                    ->color('success')
+                    ->requiresConfirmation()
+                    ->action(function ($record) {
+
+                        // VALIDASI SYARAT FINAL
+                        if (
+                            !$record->is_biodata_complete ||
+                            !$record->is_documents_complete ||
+                            !$record->is_berkas_lulus ||
+                            !$record->is_nilai_lulus
+                        ) {
+                            Notification::make()
+                                ->title('Tidak bisa dipindah ke Final PMB. Syarat belum lengkap.')
+                                ->danger()
+                                ->send();
+
+                            return;
+                        }
+
+                        // MAPPING BIODATA
+                        $data = $record->toFinalCandidateData();
+
+                        // INSERT / UPDATE FINAL TABLE
+                        \App\Models\PmbFinalCandidate::updateOrCreate(
+                            ['applicant_id' => $record->id],
+                            $data
+                        );
+
+                        Notification::make()
+                            ->title('Pendaftar berhasil dipindah ke Final PMB!')
+                            ->success()
+                            ->send();
+                    }),
+                // Tables\Actions\DeleteAction::make(),
             ]);
+
+
     }
 
 

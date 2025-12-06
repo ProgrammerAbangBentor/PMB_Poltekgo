@@ -56,25 +56,9 @@
         {{-- STATUS SINKRONISASI --}}
         @if ($applicant->is_lulus_final)
             <div class="bg-white rounded-3xl shadow-xl p-6 border border-gray-100">
-                <h3 class="font-semibold text-gray-800 mb-2">Sinkronisasi ke SAKTI</h3>
-
-                @if ($applicant->synced_to_sakti_at)
-                    <p class="text-xs text-green-700">
-                        ✔ Data sudah masuk SAKTI<br>
-                        Pada: {{ $applicant->synced_to_sakti_at->format('d M Y H:i') }}
-                    </p>
-                @else
-                    <p class="text-xs text-gray-600">Menunggu sinkronisasi dari admin PMB.</p>
-                @endif
+                <h3 class="font-semibold text-gray-800 mb-2">Pengumuman</h3>
+                    <p class="text-xs text-gray-600"><strong>Silahkan melengkapi biodata dan dokumen persyaratan untuk Akademik</strong></p>
             </div>
-        @endif
-
-        {{-- DOWNLOAD SURAT --}}
-        @if ($applicant->is_lulus_final && $applicant->synced_to_sakti_at)
-            <a href="{{ route('pendaftar.status.final-result') }}"
-               class="block text-center bg-purple-600 text-white py-3 rounded-2xl shadow-lg font-medium">
-                📄 Download Surat Kelulusan
-            </a>
         @endif
 
     </div>

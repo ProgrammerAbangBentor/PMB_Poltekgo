@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\ApplicantScoreResource\Pages;
+namespace App\Filament\Resources\EntryPathResource\Pages;
 
-use App\Filament\Resources\ApplicantScoreResource;
+use App\Filament\Resources\EntryPathResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditApplicantScore extends EditRecord
+class EditEntryPath extends EditRecord
 {
-    protected static string $resource = ApplicantScoreResource::class;
+    protected static string $resource = EntryPathResource::class;
 
     protected function getHeaderActions(): array
     {

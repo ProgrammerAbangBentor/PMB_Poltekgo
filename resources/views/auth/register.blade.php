@@ -1,10 +1,9 @@
-<x-guest-layout title="Daftar Akun Pendaftar">
+@php
+    $jalurMasuk = $jalurMasuk ?? [];
+    $prodiList = $prodiList ?? [];
+@endphp
 
-    {{-- <!-- LOGO -->
-    <div class="flex justify-center -mt-8 mb-4">
-        <img src="{{ asset('logo/logo-politeknik-gorontalo.png') }}"
-             class="w-20 h-20 object-contain">
-    </div> --}}
+<x-guest-layout title="Daftar Akun Pendaftar">
 
     <!-- TITLE -->
     <div class="text-center mb-6">
@@ -26,6 +25,19 @@
                    border border-white/20 focus:ring-2 focus:ring-purple-300 outline-none">
             <x-input-error :messages="$errors->get('name')" class="text-red-300 mt-1" />
         </div>
+
+        {{-- NIK --}}
+        <div>
+            <label class="text-sm text-purple-200">NIK</label>
+            <input id="nik" name="nik" type="text"
+                value="{{ old('nik') }}"
+                required
+                maxlength="16"
+                class="w-full px-4 py-3 rounded-lg bg-white/10 text-white placeholder-purple-300
+                border border-white/20 focus:ring-2 focus:ring-purple-300 outline-none">
+            <x-input-error :messages="$errors->get('nik')" class="text-red-300 mt-1" />
+        </div>
+
 
         {{-- No HP --}}
         <div>
@@ -63,6 +75,55 @@
                    class="w-full px-4 py-3 rounded-lg bg-white/10 text-white placeholder-purple-300
                    border border-white/20 focus:ring-2 focus:ring-purple-300 outline-none">
             <x-input-error :messages="$errors->get('password_confirmation')" class="text-red-300 mt-1" />
+        </div>
+
+        {{-- Jalur Masuk --}}
+        <div>
+            <label class="text-sm text-purple-200">Jalur Masuk</label>
+            <select name="entry_path_id"
+                    required
+                    class="w-full px-4 py-3 rounded-lg bg-white/10 text-white border border-white/20
+                    focus:ring-2 focus:ring-purple-300 outline-none">
+                <option value="">-- Pilih Jalur Masuk --</option>
+                @foreach ($jalurMasuk as $path)
+                    <option value="{{ $path->id }}" class="text-black">
+                        {{ $path->nama }}
+                    </option>
+                @endforeach
+            </select>
+            <x-input-error :messages="$errors->get('entry_path_id')" class="text-red-300 mt-1" />
+        </div>
+
+        {{-- Prodi Pilihan 1 --}}
+        <div>
+            <label class="text-sm text-purple-200">Prodi Pilihan 1</label>
+            <select name="study_program_id_1"
+                    required
+                    class="w-full px-4 py-3 rounded-lg bg-white/10 text-white border border-white/20
+                    focus:ring-2 focus:ring-purple-300 outline-none">
+                <option value="">-- Pilih Program Studi --</option>
+                @foreach ($prodiList as $prodi)
+                    <option value="{{ $prodi->id }}" class="text-black">
+                        {{ $prodi->nama }} ({{ $prodi->jenjang }})
+                    </option>
+                @endforeach
+            </select>
+            <x-input-error :messages="$errors->get('study_program_id_1')" class="text-red-300 mt-1" />
+        </div>
+
+        {{-- Prodi Pilihan 2 (opsional, tidak disimpan) --}}
+        <div>
+            <label class="text-sm text-purple-200">Prodi Pilihan 2 (Opsional)</label>
+            <select name="study_program_id_2"
+                    class="w-full px-4 py-3 rounded-lg bg-white/10 text-white border border-white/20
+                    focus:ring-2 focus:ring-purple-300 outline-none">
+                <option value="">-- Pilih Program Studi --</option>
+                @foreach ($prodiList as $prodi)
+                    <option value="{{ $prodi->id }}" class="text-black">
+                        {{ $prodi->nama }} ({{ $prodi->jenjang }})
+                    </option>
+                @endforeach
+            </select>
         </div>
 
         <!-- Submit -->
