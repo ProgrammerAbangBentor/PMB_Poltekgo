@@ -79,8 +79,8 @@ class RegisteredUserController extends Controller
 
             'is_biodata_complete'        => false,
             'is_documents_complete'      => false,
-            'is_file_selection_passed'   => null,
-            'is_entrance_selection_passed' => null,
+            'is_file_selection_passed'   => false,
+            'is_entrance_selection_passed' =>false,
             'is_lulus_final'             => false,
         ]);
 

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\DocumentField;
 // use App\Models\ApplicantDocument;
-
+use Illuminate\Support\Str;
 class DocumentController extends Controller
 {
     public function index()

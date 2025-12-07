@@ -1,5 +1,7 @@
+@php
+    use Illuminate\Support\Str;
+@endphp
 <x-pendaftar.layout title="Upload Berkas">
-
 <div class="pb-28">
 
     {{-- HEADER --}}

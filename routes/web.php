@@ -84,6 +84,7 @@ Route::post('/midtrans/callback', [PaymentController::class, 'callback'])
 
 Route::get('/admin/pmb/finalisasi/{id}', [PmbFinalisasiController::class, 'finalisasi'])
     ->name('admin.pmb.finalisasi');
+    
 require __DIR__.'/auth.php';
 
 
