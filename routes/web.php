@@ -8,6 +8,7 @@ use App\Http\Controllers\Pendaftar\BiodataController;
 use App\Http\Controllers\Pendaftar\DocumentController;
 use App\Http\Controllers\Pendaftar\SelectionStatusController;
 use App\Http\Controllers\Pendaftar\AdministrationPaymentController;
+use App\Http\Controllers\Pmb\PmbFinalisasiController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -48,6 +49,9 @@ Route::middleware('auth:pendaftar')
         Route::get('/payment', [PaymentController::class, 'index'])
             ->name('payment');
 
+        Route::get('/kartu/download', [PaymentController::class, 'downloadKartu'])
+            ->name('download.kartu');
+
         Route::post('/payment/upload', [PaymentController::class, 'upload'])
             ->name('payment.upload');
 
@@ -69,13 +73,17 @@ Route::middleware('auth:pendaftar')
         Route::get('/hasil-akhir', [SelectionStatusController::class, 'hasilAkhir'])
         ->name('status.final-result');
 
+
         Route::get('/payment-administration',[AdministrationPaymentController::class, 'index']
         )->name('payment.admin');
+
 
 });
 Route::post('/midtrans/callback', [PaymentController::class, 'callback'])
     ->name('midtrans.callback');
 
+Route::get('/admin/pmb/finalisasi/{id}', [PmbFinalisasiController::class, 'finalisasi'])
+    ->name('admin.pmb.finalisasi');
 require __DIR__.'/auth.php';
 
 

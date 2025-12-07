@@ -145,8 +145,18 @@ class Applicant extends Authenticatable
         return $this->is_berkas_lulus && $this->is_nilai_lulus;
     }
 
+
+
+
+    public function payment()
+{
+    return $this->hasOne(\App\Models\Payment::class, 'applicant_id');
+}
+
     public function toFinalCandidateData()
     {
+         // Pastikan relasi benar-benar dimuat
+        $this->loadMissing(['program','path','period','wave']);
         // Ambil semua nilai biodata
         $biodata = $this->fieldValues()
             ->with('field')
@@ -205,11 +215,10 @@ class Applicant extends Authenticatable
             'penghasilan_wali' => $biodata['penghasilan_wali'] ?? null,
 
             // Mapping PMB
-            'study_program_id' => $this->study_program_id,
-            'entry_path_id' => $this->entry_path_id,
-            'pmb_period_id' => $this->pmb_period_id,
-            'pmb_wave_id' => $this->pmb_wave_id,
+            'study_program_name' => $this->program?->nama ?? null,
+            'entry_path_name'    => $this->path?->nama ?? null,
+            'pmb_period_name'    => $this->period?->nama_periode ?? null,
+            'pmb_wave_name'      => $this->wave?->nama_gelombang ?? null,
         ];
     }
-
 }

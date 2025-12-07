@@ -6,6 +6,7 @@ use App\Filament\Resources\ApplicantResource;
 use App\Models\PmbFinalCandidate;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Notifications\Notification;
 
 class ListApplicants extends ListRecords
 {
@@ -14,35 +15,45 @@ class ListApplicants extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('kirimFinal')
-                ->label('Pindahkan ke Final PMB')
-                ->icon('heroicon-o-check-circle')
+            Actions\Action::make('kirimSemuaLolos')
+                ->label('Kirim Semua yang Lolos Final')
+                ->icon('heroicon-o-check-badge')
+                ->color('success')
                 ->requiresConfirmation()
-                ->action(function ($record) {
+                ->action(function () {
 
-                    // CEK SYARAT FINAL
-                    if (
-                        !$record->is_biodata_complete ||
-                        !$record->is_documents_complete ||
-                        !$record->is_berkas_lulus ||
-                        !$record->is_nilai_lulus
-                    ) {
-                        $this->notify('danger', 'Pendaftar belum memenuhi syarat final.');
+                    $records = \App\Models\Applicant::with(['program','path','period','wave'])
+                        ->where('is_biodata_complete', 1)
+                        ->where('is_documents_complete', 1)
+                        ->where('is_file_selection_passed', 1)
+                        ->get()
+                        ->filter(fn($item) => $item->is_lulus_final);
+
+                    if ($records->isEmpty()) {
+                        Notification::make()
+                            ->title('Tidak ada pendaftar yang memenuhi syarat final.')
+                            ->warning()
+                            ->send();
                         return;
                     }
 
-                    // GET BIODATA MAPPING
-                    $data = $record->toFinalCandidateData();
+                    foreach ($records as $record) {
+                        $record->loadMissing(['program','path','period','wave']);
 
-                    // INSERT / UPDATE KE TABEL FINAL
-                    PmbFinalCandidate::updateOrCreate(
-                        ['applicant_id' => $record->id],
-                        $data
-                    );
+                        $data = $record->toFinalCandidateData();
 
-                    $this->notify('success', 'Pendaftar berhasil dipindahkan ke Final PMB.');
-                })
-                ->visible(fn () => true),
+                        \App\Models\PmbFinalCandidate::updateOrCreate(
+                            ['applicant_id' => $record->id],
+                            $data
+                        );
+                    }
+
+                    Notification::make()
+                        ->title('Semua pendaftar yang lolos Final berhasil dipindahkan!')
+                        ->success()
+                        ->send();
+                }),
         ];
     }
+
 }

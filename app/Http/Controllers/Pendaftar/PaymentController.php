@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Applicant;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 
 class PaymentController extends Controller
 {
@@ -129,4 +132,39 @@ class PaymentController extends Controller
 
         return response()->json(['message' => 'OK']);
     }
+
+public function downloadKartu()
+{
+    $pendaftar = auth('pendaftar')->user();
+
+    if (!$pendaftar) {
+        return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
+    }
+
+    $payment = $pendaftar->payment;
+
+    if (!$payment || $payment->status !== 'approved') {
+        return back()->with('error', 'Pembayaran belum diverifikasi.');
+    }
+
+    // ---- QR CODE FIX (SVG > Base64) ----
+    $qrSvg = QrCode::format('svg')
+        ->size(140)
+        ->generate($pendaftar->nik . ' | ' . $pendaftar->nama);
+
+    $qrBase64 = 'data:image/svg+xml;base64,' . base64_encode($qrSvg);
+
+    // ---- Generate PDF ----
+    $pdf = PDF::loadView('pendaftar.kartu', [
+        'pendaftar' => $pendaftar,
+        'payment'   => $payment,
+        'qrBase64'  => $qrBase64
+    ])->setPaper('A4', 'portrait');
+
+    return response()->streamDownload(function () use ($pdf) {
+        echo $pdf->output();
+    }, 'Kartu-Registrasi-' . $pendaftar->nama . '.pdf');
+}
+
+
 }

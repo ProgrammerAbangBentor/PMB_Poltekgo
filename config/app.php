@@ -1,6 +1,11 @@
 <?php
 
 return [
+    
+     'aliases' => [
+        'App' => Illuminate\Support\Facades\App::class,
+        'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class, // ← TAMBAHKAN INI
+    ],
 
     /*
     |--------------------------------------------------------------------------
